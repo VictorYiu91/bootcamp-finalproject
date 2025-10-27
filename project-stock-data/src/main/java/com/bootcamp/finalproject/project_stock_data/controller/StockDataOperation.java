@@ -9,7 +9,7 @@ import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.model.dto.CompanyDTO;
 import com.bootcamp.finalproject.project_stock_data.model.dto.QuoteDTO;
 
-public interface StockDataController {
+public interface StockDataOperation {
   @GetMapping(value = "/quote")
   QuoteDTO getQuote(@RequestParam String symbol);
   

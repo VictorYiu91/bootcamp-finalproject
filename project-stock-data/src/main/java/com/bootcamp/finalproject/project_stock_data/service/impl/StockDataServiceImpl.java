@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.bootcamp.finalproject.project_stock_data.Codelib.GResponse;
 import com.bootcamp.finalproject.project_stock_data.Codelib.SysCode;
+import com.bootcamp.finalproject.project_stock_data.entity.ErrorLogEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockSymbolEntity;
@@ -19,6 +20,7 @@ import com.bootcamp.finalproject.project_stock_data.model.dto.CompanyDTO;
 import com.bootcamp.finalproject.project_stock_data.model.dto.OHLCVDTO;
 import com.bootcamp.finalproject.project_stock_data.model.dto.QuoteDTO;
 import com.bootcamp.finalproject.project_stock_data.repository.StockSymbolRepository;
+import com.bootcamp.finalproject.project_stock_data.repository.errorlog.ErrorLogRepository;
 import com.bootcamp.finalproject.project_stock_data.service.StockDataService;
 
 @Service
@@ -28,6 +30,9 @@ public class StockDataServiceImpl implements StockDataService {
 
   @Autowired
   private StockSymbolRepository stockSymbolRepository;
+
+  @Autowired
+  private ErrorLogRepository errorLogRepository;
 
   @Autowired
   private StockProfileEntityMapper stockProfileEntityMapper;
@@ -95,6 +100,11 @@ public class StockDataServiceImpl implements StockDataService {
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
+      List<ErrorLogEntity> errorLogEntities = warnings.stream().map(e -> {
+        return ErrorLogEntity.builder().errorMessage(e).build();
+      }).collect(Collectors.toList());
+      this.errorLogRepository.saveAll(errorLogEntities);
+
       return GResponse.<List<StockProfileEntity>>builder().code(SysCode.FAIL)
           .messages(warnings).data(stockProfileEntities).build();
     } else {
@@ -106,7 +116,7 @@ public class StockDataServiceImpl implements StockDataService {
   @Override
   public OHLCVDTO getOhlcv(String symbol, Long period1, Long period2) {
     String ohlcvUrl = UriComponentsBuilder.newInstance() //
-        .scheme("http")//
+        .scheme("https")//
         .host("query1.finance.yahoo.com") //
         .path("/v8/finance/chart/{symbol}") //
         .queryParam("period1", period1)//
@@ -121,8 +131,8 @@ public class StockDataServiceImpl implements StockDataService {
   @Override
   public GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1,
       Long period2) throws InterruptedException {
-    // List<String> symbols = this.getSymbols();
-    List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
+    List<String> symbols = this.getSymbols();
+    // List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     boolean isFail = false;
@@ -145,6 +155,11 @@ public class StockDataServiceImpl implements StockDataService {
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
+      List<ErrorLogEntity> errorLogEntities = warnings.stream().map(e -> {
+        return ErrorLogEntity.builder().errorMessage(e).build();
+      }).collect(Collectors.toList());
+      this.errorLogRepository.saveAll(errorLogEntities);
+
       return GResponse.<List<StockOHLCVEntity>>builder().code(SysCode.FAIL)
           .messages(warnings).data(stockOHLCVEntities).build();
     } else {

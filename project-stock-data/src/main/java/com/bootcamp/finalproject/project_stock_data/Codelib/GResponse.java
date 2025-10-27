@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class GResponse<T> {
-  private LocalDateTime dateTime;
+  private LocalDateTime time;
   private SysCode code;
   private List<String> messages;
   private T data;
 
-  public LocalDateTime getDateTime() {
-    return this.dateTime;
+  public LocalDateTime getTime() {
+    return this.time;
   }
 
   public SysCode getCode() {
@@ -30,20 +30,20 @@ public class GResponse<T> {
   }
 
   public GResponse(Builder<T> builder) {
-    this.dateTime = builder.dateTime;
+    this.time = builder.time;
     this.code = builder.code;
     this.messages = builder.messages;
     this.data = builder.data;
   }
 
   public static class Builder<T> {
-    private LocalDateTime dateTime;
+    private LocalDateTime time;
     private SysCode code;
     private List<String> messages;
     private T data;
 
     public Builder() {
-      this.dateTime = LocalDateTime.now();
+      this.time = LocalDateTime.now();
       this.code = SysCode.OK;
       this.messages = List.of("OK.");
     }

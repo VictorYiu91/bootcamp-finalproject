@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import com.bootcamp.finalproject.project_stock_data.Codelib.GResponse;
-import com.bootcamp.finalproject.project_stock_data.controller.StockDataController;
+import com.bootcamp.finalproject.project_stock_data.controller.StockDataOperation;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.model.dto.CompanyDTO;
@@ -12,7 +12,7 @@ import com.bootcamp.finalproject.project_stock_data.model.dto.QuoteDTO;
 import com.bootcamp.finalproject.project_stock_data.service.StockDataService;
 
 @RestController
-public class StockDataOperation implements StockDataController {
+public class StockDataController implements StockDataOperation {
   @Autowired
   private StockDataService stockDataService;
 

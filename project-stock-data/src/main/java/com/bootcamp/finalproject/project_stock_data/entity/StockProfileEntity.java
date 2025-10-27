@@ -1,5 +1,6 @@
 package com.bootcamp.finalproject.project_stock_data.entity;
 
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,22 +26,18 @@ public class StockProfileEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
   @Column(nullable = false)
   private String industry;
-
   private String logo;
-
   @Column(name = "market_capitalization")
   private Double marketCapitalization;
-
   @Column(nullable = false)
   private String name;
-
   @Column(name = "shares_outstanding")
   private Double shareOutstanding;
-
   @ManyToOne
   @JoinColumn(name = "stock_id", nullable = false)
   private StockSymbolEntity stockSymbolEntity;
+  @Builder.Default
+  private LocalDateTime lastUpdated = LocalDateTime.now();
 }
