@@ -18,12 +18,11 @@ public class StockOHLCVEntityMapper {
   private StockSymbolRepository stockSymbolRepository;
 
   public StockOHLCVEntity map(OHLCVDTO ohlcvDTO) {
-    List<StockSymbolEntity> stockSymbolEntities =
-        this.stockSymbolRepository.findAll();
-    StockSymbolEntity stockSymbolEntity = stockSymbolEntities.stream()
-        .filter(e -> e.getSymbol().equals(
-            ohlcvDTO.getChart().getResult().getFirst().getMeta().getSymbol()))
-        .collect(Collectors.toList()).getFirst();
+    String symbol = ohlcvDTO.getChart().getResult().getFirst().getMeta().getSymbol();
+    StockSymbolEntity stockSymbolEntity = this.stockSymbolRepository
+        .findBySymbol(symbol).orElseThrow(() -> new IllegalArgumentException(
+            "Symbol not found in database: " + symbol));
+
     Long timestamp =
         ohlcvDTO.getChart().getResult().getFirst().getTimestamp().getFirst();
     Double open = ohlcvDTO.getChart().getResult().getFirst().getIndicators()

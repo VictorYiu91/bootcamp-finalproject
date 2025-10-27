@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import com.bootcamp.finalproject.project_stock_data.Codelib.GResponse;
+import com.bootcamp.finalproject.project_stock_data.Codelib.SysCode;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockSymbolEntity;
@@ -68,22 +70,37 @@ public class StockDataServiceImpl implements StockDataService {
   }
 
   @Override
-  public List<StockProfileEntity> getStockProfileEntities()
+  public GResponse<List<StockProfileEntity>> getStockProfileEntities()
       throws InterruptedException {
-    // List<String> symbols = this.getSymbols();
-    List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
-    List<CompanyDTO> stockProfiles = new ArrayList<>();
+    boolean isFail = false;
+    List<String> symbols = this.getSymbols();
+    // List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
+    List<StockProfileEntity> stockProfileEntities = new ArrayList<>();
+    List<String> warnings = new ArrayList<>();
     for (String symbol : symbols) {
-      CompanyDTO company = this.getStockProfile(symbol);
-      stockProfiles.add(company);
+      try {
+        CompanyDTO company = this.getStockProfile(symbol);
+        StockProfileEntity stockProfileEntity =
+            this.stockProfileEntityMapper.map(company);
+        stockProfileEntities.add(stockProfileEntity);
+      } catch (IllegalArgumentException e) {
+        isFail = true;
+        warnings.add(e.getMessage() + " - skipped");
+      } catch (Exception e) {
+        isFail = true;
+        warnings
+            .add("Failed to process symbol " + symbol + ": " + e.getMessage());
+      }
 
-      Thread.sleep(Duration.ofSeconds(2));
+      Thread.sleep(Duration.ofSeconds(3));
     }
-    List<StockProfileEntity> stockProfileEntities =
-        stockProfiles.stream().map(e -> {
-          return this.stockProfileEntityMapper.map(e);
-        }).collect(Collectors.toList());
-    return stockProfileEntities;
+    if (isFail == true) {
+      return GResponse.<List<StockProfileEntity>>builder().code(SysCode.FAIL)
+          .messages(warnings).data(stockProfileEntities).build();
+    } else {
+      return GResponse.<List<StockProfileEntity>>builder()
+          .data(stockProfileEntities).build();
+    }
   }
 
   @Override
@@ -97,26 +114,41 @@ public class StockDataServiceImpl implements StockDataService {
         .queryParam("interval", "1d")//
         .queryParam("events", "history").build() //
         .toUriString();
-    System.out.println(ohlcvUrl);
     return this.restTemplate.getForObject(ohlcvUrl, OHLCVDTO.class);
   }
 
   @Override
-  public List<StockOHLCVEntity> getStockOHLCVEntities(Long period1,
+  public GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1,
       Long period2) throws InterruptedException {
     // List<String> symbols = this.getSymbols();
     List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
-    List<OHLCVDTO> ohlcvDTOs = new ArrayList<>();
+    List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
+    List<String> warnings = new ArrayList<>();
+    boolean isFail = false;
 
     for (String symbol : symbols) {
-      OHLCVDTO ohlcvDTO = this.getOhlcv(symbol, period1, period2);
-      ohlcvDTOs.add(ohlcvDTO);
+      try {
+        OHLCVDTO ohlcvDTO = this.getOhlcv(symbol, period1, period2);
+        StockOHLCVEntity stockOHLCVEntity =
+            this.stockOHLCVEntityMapper.map(ohlcvDTO);
+        stockOHLCVEntities.add(stockOHLCVEntity);
+      } catch (IllegalArgumentException e) {
+        isFail = true;
+        warnings.add(e.getMessage() + " - skipped");
+      } catch (Exception e) {
+        isFail = true;
+        warnings
+            .add("Failed to process symbol " + symbol + ": " + e.getMessage());
+      }
 
-      Thread.sleep(Duration.ofSeconds(2));
+      Thread.sleep(Duration.ofSeconds(3));
     }
-    List<StockOHLCVEntity> stockOHLCVEntities = ohlcvDTOs.stream().map(e -> {
-      return this.stockOHLCVEntityMapper.map(e);
-    }).collect(Collectors.toList());
-    return stockOHLCVEntities;
+    if (isFail == true) {
+      return GResponse.<List<StockOHLCVEntity>>builder().code(SysCode.FAIL)
+          .messages(warnings).data(stockOHLCVEntities).build();
+    } else {
+      return GResponse.<List<StockOHLCVEntity>>builder()
+          .data(stockOHLCVEntities).build();
+    }
   }
 }
