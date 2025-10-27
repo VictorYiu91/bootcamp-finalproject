@@ -108,11 +108,12 @@ public class StockDataServiceImpl implements StockDataService {
     String ohlcvUrl = UriComponentsBuilder.newInstance() //
         .scheme("http")//
         .host("query1.finance.yahoo.com") //
-        .path("/v8/finance/chart") //
-        .pathSegment(symbol).queryParam("period1", period1)//
+        .path("/v8/finance/chart/{symbol}") //
+        .queryParam("period1", period1)//
         .queryParam("period2", period2)//
         .queryParam("interval", "1d")//
-        .queryParam("events", "history").build() //
+        .queryParam("events", "history")//
+        .buildAndExpand(symbol)//
         .toUriString();
     return this.restTemplate.getForObject(ohlcvUrl, OHLCVDTO.class);
   }

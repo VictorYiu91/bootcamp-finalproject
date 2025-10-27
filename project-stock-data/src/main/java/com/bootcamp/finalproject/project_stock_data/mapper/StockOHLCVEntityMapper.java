@@ -3,8 +3,6 @@ package com.bootcamp.finalproject.project_stock_data.mapper;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
