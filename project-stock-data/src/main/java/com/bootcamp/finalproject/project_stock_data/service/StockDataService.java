@@ -10,11 +10,18 @@ import com.bootcamp.finalproject.project_stock_data.model.dto.QuoteDTO;
 
 public interface StockDataService {
   QuoteDTO getQuote(String symbol);
+
   List<String> getSymbols();
+
   CompanyDTO getStockProfile(String symbol);
+  
   GResponse<List<StockProfileEntity>> getStockProfileEntities() throws InterruptedException;
+  
   StockProfileEntity getStockProfileEntityDB(String symbol);
+  
   OHLCVDTO getOhlcv(String symbol, Long period1, Long period2);
+  
   GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1, Long period2) throws InterruptedException;
+  
   List<StockOHLCVEntity> getStockOHLCVEntitiesDB(String symbol);
 }

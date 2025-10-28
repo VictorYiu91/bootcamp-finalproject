@@ -17,6 +17,17 @@ public class DataServiceImpl implements DataService {
   private RestTemplate restTemplate;
 
   @Override
+  public List<String> getSymbols(){
+        String symbolsUrl = UriComponentsBuilder.newInstance() //
+        .scheme("http")//
+        .host("localhost:8081") //
+        .path("symbols")//
+        .build() //
+        .toUriString();
+    return Arrays.asList(this.restTemplate.getForObject(symbolsUrl, String[].class));
+  }
+
+  @Override
   public QuoteDTO getQuote(String symbol) {
     String quoteUrl = UriComponentsBuilder.newInstance() //
         .scheme("http")//

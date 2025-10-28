@@ -44,7 +44,7 @@ public class HeatMapStockCandleController
 
   @Override
   public List<HeatMapDto> getAllHeatMapData() {
-    List<String> symbols = List.of("AAPL", "TSLA", "GOOGL");
+    List<String> symbols = this.dataService.getSymbols();
     return symbols.stream().map(symbol -> {
       try {
         return getHeatMapData(symbol);

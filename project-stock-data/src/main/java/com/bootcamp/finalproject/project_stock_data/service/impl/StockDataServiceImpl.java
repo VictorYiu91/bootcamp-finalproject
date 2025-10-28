@@ -86,10 +86,12 @@ public class StockDataServiceImpl implements StockDataService {
   public GResponse<List<StockProfileEntity>> getStockProfileEntities()
       throws InterruptedException {
     boolean isFail = false;
-    //List<String> symbols = this.getSymbols();
-    List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
+    List<String> symbols = this.getSymbols();
+    //List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
     List<StockProfileEntity> stockProfileEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
+    int idx = 0;
+
     for (String symbol : symbols) {
       try {
         CompanyDTO company = this.getStockProfile(symbol);
@@ -110,7 +112,8 @@ public class StockDataServiceImpl implements StockDataService {
                 "Failed to process symbol " + symbol + ": " + e.getMessage())
             .build());
       }
-
+      idx++;
+      System.out.println((idx) + "/" + symbols.size() + " completed: " + symbol);
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
@@ -157,10 +160,11 @@ public class StockDataServiceImpl implements StockDataService {
   public GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1,
       Long period2) throws InterruptedException {
     boolean isFail = false;
-    //List<String> symbols = this.getSymbols();
-    List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
+    List<String> symbols = this.getSymbols();
+    //List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
+    int idx = 0;
 
     for (String symbol : symbols) {
       try {
@@ -182,7 +186,8 @@ public class StockDataServiceImpl implements StockDataService {
                 "Failed to process symbol " + symbol + ": " + e.getMessage())
             .build());
       }
-
+      idx++;
+      System.out.println((idx) + "/" + symbols.size() + " completed: " + symbol);
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
