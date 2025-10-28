@@ -2,11 +2,13 @@ package com.bootcamp.finalproject.project_heatmap_ui.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 import com.bootcamp.finalproject.project_heatmap_ui.dto.StockCandleDto;
 import com.bootcamp.finalproject.project_heatmap_ui.dto.StockCandleDto.OHLCVs;
 import com.bootcamp.finalproject.project_heatmap_ui.model.dto.StockOHLCVDTO;
 import com.bootcamp.finalproject.project_heatmap_ui.model.dto.StockProfileDTO;
 
+@Component
 public class StockCandleDtoMapper {
   public StockCandleDto map(StockProfileDTO stockProfileDTO,
       List<StockOHLCVDTO> stockOHLCVDTOs) {

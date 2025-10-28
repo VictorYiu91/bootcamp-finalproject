@@ -1,9 +1,11 @@
 package com.bootcamp.finalproject.project_heatmap_ui.mapper;
 
+import org.springframework.stereotype.Component;
 import com.bootcamp.finalproject.project_heatmap_ui.dto.HeatMapDto;
 import com.bootcamp.finalproject.project_heatmap_ui.model.dto.QuoteDTO;
 import com.bootcamp.finalproject.project_heatmap_ui.model.dto.StockProfileDTO;
 
+@Component
 public class HeatMapDtoMapper {
   public HeatMapDto map(StockProfileDTO stockProfileDTO, QuoteDTO quoteDTO) {
     return HeatMapDto.builder()//
