@@ -87,7 +87,7 @@ public class StockDataServiceImpl implements StockDataService {
       throws InterruptedException {
     boolean isFail = false;
     //List<String> symbols = this.getSymbols();
-    List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
+    List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
     List<StockProfileEntity> stockProfileEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     for (String symbol : symbols) {
@@ -158,7 +158,7 @@ public class StockDataServiceImpl implements StockDataService {
       Long period2) throws InterruptedException {
     boolean isFail = false;
     //List<String> symbols = this.getSymbols();
-    List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
+    List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
 
