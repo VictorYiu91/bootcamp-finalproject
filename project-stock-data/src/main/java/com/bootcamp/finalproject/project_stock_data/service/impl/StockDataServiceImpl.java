@@ -86,8 +86,8 @@ public class StockDataServiceImpl implements StockDataService {
   public GResponse<List<StockProfileEntity>> getStockProfileEntities()
       throws InterruptedException {
     boolean isFail = false;
-    List<String> symbols = this.getSymbols();
-    // List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
+    //List<String> symbols = this.getSymbols();
+    List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
     List<StockProfileEntity> stockProfileEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     for (String symbol : symbols) {
@@ -157,8 +157,8 @@ public class StockDataServiceImpl implements StockDataService {
   public GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1,
       Long period2) throws InterruptedException {
     boolean isFail = false;
-    List<String> symbols = this.getSymbols();
-    // List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
+    //List<String> symbols = this.getSymbols();
+    List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
 

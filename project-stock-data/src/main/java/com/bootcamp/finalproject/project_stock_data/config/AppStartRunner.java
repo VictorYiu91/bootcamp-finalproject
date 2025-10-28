@@ -24,5 +24,6 @@ public class AppStartRunner implements CommandLineRunner{
     System.out.println("Retrieving updated stock profiles.");
     GResponse<List<StockProfileEntity>> stockProfileEntities = this.stockDataService.getStockProfileEntities();
     this.stockProfileRepository.saveAll(stockProfileEntities.getData());
+    System.out.println("Stock profiles updated.");
   }
 }

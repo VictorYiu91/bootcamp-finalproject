@@ -22,10 +22,10 @@ public interface StockDataOperation {
   @GetMapping(value = "/companies")
   GResponse<List<StockProfileEntity>> getStockProfileEntities() throws InterruptedException;
 
-  @GetMapping(value= "/dbstockprofiles")
+  @GetMapping(value= "/dbstockprofile")
   StockProfileEntity getStockProfileEntityDB(@RequestParam String symbol);
 
-  @GetMapping(value = "ohlcv")
+  @GetMapping(value = "/ohlcv")
   GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(@RequestParam Long period1, @RequestParam Long period2) throws InterruptedException;
   
   @GetMapping(value= "/dbstockohlcv")

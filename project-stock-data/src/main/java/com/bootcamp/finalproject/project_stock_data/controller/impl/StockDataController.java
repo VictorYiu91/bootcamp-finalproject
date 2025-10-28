@@ -9,8 +9,6 @@ import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.model.dto.CompanyDTO;
 import com.bootcamp.finalproject.project_stock_data.model.dto.QuoteDTO;
-import com.bootcamp.finalproject.project_stock_data.repository.StockOHLCVRepository;
-import com.bootcamp.finalproject.project_stock_data.repository.StockProfileRepository;
 import com.bootcamp.finalproject.project_stock_data.service.StockDataService;
 
 @RestController

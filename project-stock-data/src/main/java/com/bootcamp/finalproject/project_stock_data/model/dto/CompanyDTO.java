@@ -1,6 +1,7 @@
 package com.bootcamp.finalproject.project_stock_data.model.dto;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
@@ -17,5 +18,6 @@ public class CompanyDTO {
   private String phone;
   private Double shareOutstanding;
   private String ticker;
+  @JsonProperty(value = "weburl")
   private String webUrl;
 }
