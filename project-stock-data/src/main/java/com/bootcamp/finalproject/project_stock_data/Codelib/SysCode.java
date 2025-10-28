@@ -1,4 +1,4 @@
-package com.bootcamp.finalproject.project_stock_data.Codelib;
+package com.bootcamp.finalproject.project_stock_data.codelib;
 
 public enum SysCode {
   OK(0, "OK."), //

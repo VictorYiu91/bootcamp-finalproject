@@ -9,4 +9,5 @@ import com.bootcamp.finalproject.project_stock_data.entity.StockSymbolEntity;
 public interface StockSymbolRepository
     extends JpaRepository<StockSymbolEntity, Long> {
   Optional<StockSymbolEntity> findBySymbol(String symbol);
+  boolean existsBySymbol(String symbol);
 }

@@ -17,5 +17,5 @@ public class CompanyDTO {
   private String phone;
   private Double shareOutstanding;
   private String ticker;
-  private String weburl;
+  private String webUrl;
 }

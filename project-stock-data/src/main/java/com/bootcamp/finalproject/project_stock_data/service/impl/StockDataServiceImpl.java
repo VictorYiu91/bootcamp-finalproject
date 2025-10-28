@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.bootcamp.finalproject.project_stock_data.Codelib.GResponse;
-import com.bootcamp.finalproject.project_stock_data.Codelib.SysCode;
+import com.bootcamp.finalproject.project_stock_data.codelib.GResponse;
+import com.bootcamp.finalproject.project_stock_data.codelib.SysCode;
 import com.bootcamp.finalproject.project_stock_data.entity.ErrorLogEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
@@ -19,6 +19,8 @@ import com.bootcamp.finalproject.project_stock_data.mapper.StockProfileEntityMap
 import com.bootcamp.finalproject.project_stock_data.model.dto.CompanyDTO;
 import com.bootcamp.finalproject.project_stock_data.model.dto.OHLCVDTO;
 import com.bootcamp.finalproject.project_stock_data.model.dto.QuoteDTO;
+import com.bootcamp.finalproject.project_stock_data.repository.StockOHLCVRepository;
+import com.bootcamp.finalproject.project_stock_data.repository.StockProfileRepository;
 import com.bootcamp.finalproject.project_stock_data.repository.StockSymbolRepository;
 import com.bootcamp.finalproject.project_stock_data.repository.errorlog.ErrorLogRepository;
 import com.bootcamp.finalproject.project_stock_data.service.StockDataService;
@@ -30,6 +32,12 @@ public class StockDataServiceImpl implements StockDataService {
 
   @Autowired
   private StockSymbolRepository stockSymbolRepository;
+
+  @Autowired
+  private StockProfileRepository stockProfileRepository;
+
+  @Autowired
+  private StockOHLCVRepository stockOHLCVRepository;
 
   @Autowired
   private ErrorLogRepository errorLogRepository;
@@ -91,26 +99,43 @@ public class StockDataServiceImpl implements StockDataService {
       } catch (IllegalArgumentException e) {
         isFail = true;
         warnings.add(e.getMessage() + " - skipped");
+        this.errorLogRepository.save(ErrorLogEntity.builder()
+            .errorMessage(e.getMessage() + " - skipped").build());
       } catch (Exception e) {
         isFail = true;
         warnings
             .add("Failed to process symbol " + symbol + ": " + e.getMessage());
+        this.errorLogRepository.save(ErrorLogEntity.builder()
+            .errorMessage(
+                "Failed to process symbol " + symbol + ": " + e.getMessage())
+            .build());
       }
 
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
-      List<ErrorLogEntity> errorLogEntities = warnings.stream().map(e -> {
-        return ErrorLogEntity.builder().errorMessage(e).build();
-      }).collect(Collectors.toList());
-      this.errorLogRepository.saveAll(errorLogEntities);
-
       return GResponse.<List<StockProfileEntity>>builder().code(SysCode.FAIL)
           .messages(warnings).data(stockProfileEntities).build();
     } else {
       return GResponse.<List<StockProfileEntity>>builder()
           .data(stockProfileEntities).build();
     }
+  }
+
+  @Override
+  public StockProfileEntity getStockProfileEntityDB(String symbol) {
+    StockProfileEntity stockProfileEntity = null;
+    try {
+      if (!stockSymbolRepository.existsBySymbol(symbol)) {
+        throw new IllegalArgumentException("Symbol not found: " + symbol);
+      }
+      stockProfileEntity = stockProfileRepository
+          .findByStockSymbolEntity_Symbol(symbol).orElse(null);
+    } catch (IllegalArgumentException e) {
+      this.errorLogRepository
+          .save(ErrorLogEntity.builder().errorMessage(e.getMessage()).build());
+    }
+    return stockProfileEntity;
   }
 
   @Override
@@ -131,11 +156,11 @@ public class StockDataServiceImpl implements StockDataService {
   @Override
   public GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1,
       Long period2) throws InterruptedException {
+    boolean isFail = false;
     List<String> symbols = this.getSymbols();
     // List<String> symbols = List.of("TSLA", "AAPL", "GOOG");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
-    boolean isFail = false;
 
     for (String symbol : symbols) {
       try {
@@ -146,25 +171,42 @@ public class StockDataServiceImpl implements StockDataService {
       } catch (IllegalArgumentException e) {
         isFail = true;
         warnings.add(e.getMessage() + " - skipped");
+        this.errorLogRepository.save(ErrorLogEntity.builder()
+            .errorMessage(e.getMessage() + " - skipped").build());
       } catch (Exception e) {
         isFail = true;
         warnings
             .add("Failed to process symbol " + symbol + ": " + e.getMessage());
+        this.errorLogRepository.save(ErrorLogEntity.builder()
+            .errorMessage(
+                "Failed to process symbol " + symbol + ": " + e.getMessage())
+            .build());
       }
 
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
-      List<ErrorLogEntity> errorLogEntities = warnings.stream().map(e -> {
-        return ErrorLogEntity.builder().errorMessage(e).build();
-      }).collect(Collectors.toList());
-      this.errorLogRepository.saveAll(errorLogEntities);
-
       return GResponse.<List<StockOHLCVEntity>>builder().code(SysCode.FAIL)
           .messages(warnings).data(stockOHLCVEntities).build();
     } else {
       return GResponse.<List<StockOHLCVEntity>>builder()
           .data(stockOHLCVEntities).build();
     }
+  }
+
+  @Override
+  public List<StockOHLCVEntity> getStockOHLCVEntitiesDB(String symbol) {
+    List<StockOHLCVEntity> stockOHLCVEntities = null;
+    try {
+      if (!stockSymbolRepository.existsBySymbol(symbol)) {
+        throw new IllegalArgumentException("Symbol not found: " + symbol);
+      }
+      stockOHLCVEntities =
+          stockOHLCVRepository.findAllByStockSymbolEntity_Symbol(symbol);
+    } catch (IllegalArgumentException e) {
+      this.errorLogRepository
+          .save(ErrorLogEntity.builder().errorMessage(e.getMessage()).build());
+    }
+    return stockOHLCVEntities;
   }
 }

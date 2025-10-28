@@ -1,5 +1,6 @@
 package com.bootcamp.finalproject.project_stock_data.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +36,10 @@ public class StockProfileEntity {
   private String name;
   @Column(name = "shares_outstanding")
   private Double shareOutstanding;
+  @Column(name = "ipo_date")
+  private LocalDate ipoDate;
+  @Column(name = "web_url")
+  private String webUrl;
   @ManyToOne
   @JoinColumn(name = "stock_id", nullable = false)
   private StockSymbolEntity stockSymbolEntity;

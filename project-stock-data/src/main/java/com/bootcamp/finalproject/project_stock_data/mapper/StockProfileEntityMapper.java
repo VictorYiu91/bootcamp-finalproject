@@ -24,6 +24,8 @@ public class StockProfileEntityMapper {
         .marketCapitalization(companyDTO.getMarketCapitalization())//
         .name(companyDTO.getName())//
         .shareOutstanding(companyDTO.getShareOutstanding())//
+        .ipoDate(companyDTO.getIpo())//
+        .webUrl(companyDTO.getWebUrl())//
         .stockSymbolEntity(stockSymbolEntity)//
         .build();
   }

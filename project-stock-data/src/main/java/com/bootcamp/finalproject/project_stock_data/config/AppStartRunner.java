@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import com.bootcamp.finalproject.project_stock_data.Codelib.GResponse;
+import com.bootcamp.finalproject.project_stock_data.codelib.GResponse;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.repository.StockProfileRepository;
 import com.bootcamp.finalproject.project_stock_data.service.StockDataService;

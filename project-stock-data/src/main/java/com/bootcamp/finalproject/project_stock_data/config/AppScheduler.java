@@ -9,11 +9,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import com.bootcamp.finalproject.project_stock_data.Codelib.GResponse;
+import com.bootcamp.finalproject.project_stock_data.codelib.GResponse;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockProfileEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockSymbolEntity;
-import com.bootcamp.finalproject.project_stock_data.repository.StockOHLVCRepository;
+import com.bootcamp.finalproject.project_stock_data.repository.StockOHLCVRepository;
 import com.bootcamp.finalproject.project_stock_data.repository.StockProfileRepository;
 import com.bootcamp.finalproject.project_stock_data.service.StockDataService;
 
@@ -26,7 +26,7 @@ public class AppScheduler {
   private StockProfileRepository stockProfileRepository;
 
   @Autowired
-  StockOHLVCRepository stockOHLVCRepository;
+  StockOHLCVRepository stockOHLCVRepository;
 
   @Scheduled(cron = " 0 0 0 * * 1-5")
   public void updateStockProfileEntities() throws InterruptedException{
@@ -60,6 +60,6 @@ public class AppScheduler {
     Long period2 = dateTime2.atZone(ZoneId.systemDefault()).toEpochSecond();
     GResponse<List<StockOHLCVEntity>> stockOHLCVEntities =
         this.stockDataService.getStockOHLCVEntities(period1, period2);
-    this.stockOHLVCRepository.saveAll(stockOHLCVEntities.getData());
+    this.stockOHLCVRepository.saveAll(stockOHLCVEntities.getData());
   }
 }
