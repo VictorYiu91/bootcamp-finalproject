@@ -34,7 +34,7 @@ public class StockProfileEntity {
   private Double marketCapitalization;
   @Column(nullable = false)
   private String name;
-  @Column(name = "shares_outstanding")
+  @Column(name = "share_outstanding")
   private Double shareOutstanding;
   @Column(name = "ipo_date")
   private LocalDate ipoDate;

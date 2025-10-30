@@ -20,10 +20,10 @@ public class AppStartRunner implements CommandLineRunner{
   @Override
   public void run(String... args) throws Exception {
     System.out.println("Deleting stock profiles.");
-    this.stockProfileRepository.deleteAll();
+    //this.stockProfileRepository.deleteAll();
     System.out.println("Retrieving updated stock profiles.");
-    GResponse<List<StockProfileEntity>> stockProfileEntities = this.stockDataService.getStockProfileEntities();
-    this.stockProfileRepository.saveAll(stockProfileEntities.getData());
+    //GResponse<List<StockProfileEntity>> stockProfileEntities = this.stockDataService.getStockProfileEntities();
+    //this.stockProfileRepository.saveAll(stockProfileEntities.getData());
     System.out.println("Stock profiles updated.");
   }
 }

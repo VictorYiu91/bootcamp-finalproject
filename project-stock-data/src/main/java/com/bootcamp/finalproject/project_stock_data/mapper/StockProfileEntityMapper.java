@@ -14,9 +14,19 @@ public class StockProfileEntityMapper {
 
   public StockProfileEntity map(CompanyDTO companyDTO) {
     String ticker = companyDTO.getTicker();
-    StockSymbolEntity stockSymbolEntity = this.stockSymbolRepository
-        .findBySymbol(ticker).orElseThrow(() -> new IllegalArgumentException(
-            "Symbol not found in database: " + ticker));
+    StockSymbolEntity stockSymbolEntity = null;
+    /*
+     * Handle the special case where "BRK.A" is mapped to "BRK.B" in our database
+     */
+    if (ticker == "BRK.A") {
+      stockSymbolEntity = this.stockSymbolRepository
+          .findBySymbol("BRK.B").orElseThrow(() -> new IllegalArgumentException(
+              "Symbol not found in database: " + ticker));
+    } else {
+      stockSymbolEntity = this.stockSymbolRepository
+          .findBySymbol(ticker).orElseThrow(() -> new IllegalArgumentException(
+              "Symbol not found in database: " + ticker));
+    }
 
     return StockProfileEntity.builder()//
         .industry(companyDTO.getFinnhubIndustry())//

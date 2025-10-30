@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.bootcamp.finalproject.project_heatmap_ui.controller.HeatMapStockCandleOperation;
 import com.bootcamp.finalproject.project_heatmap_ui.dto.HeatMapDto;
