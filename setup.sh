@@ -16,8 +16,8 @@ if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
 else
     source bootcamp-env/bin/activate
 fi
-pip install --upgrade pip
-pip install -r requirements.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 python -m ipykernel install --user --name=bootcamp-env --display-name "Python (bootcamp-env)"
 pip --version
 python --version

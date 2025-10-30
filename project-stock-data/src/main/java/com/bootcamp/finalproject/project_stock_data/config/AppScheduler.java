@@ -28,7 +28,7 @@ public class AppScheduler {
   @Autowired
   StockOHLCVRepository stockOHLCVRepository;
 
-  @Scheduled(cron = " 0 0 0 * * 1-5")
+  @Scheduled(cron = " 0 0 13 * * 1-5")
   public void updateStockProfileEntities() throws InterruptedException{
     GResponse<List<StockProfileEntity>> newStockProfileEntities = this.stockDataService.getStockProfileEntities();
     for (StockProfileEntity s : newStockProfileEntities.getData()){
