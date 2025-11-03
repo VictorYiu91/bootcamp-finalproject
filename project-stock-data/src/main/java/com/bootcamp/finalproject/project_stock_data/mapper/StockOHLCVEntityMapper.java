@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.bootcamp.finalproject.project_stock_data.entity.StockOHLCVEntity;
 import com.bootcamp.finalproject.project_stock_data.entity.StockSymbolEntity;
 import com.bootcamp.finalproject.project_stock_data.model.dto.OHLCVDTO;
+import com.bootcamp.finalproject.project_stock_data.model.dto.OHLCVDTO.Chart.Result.Indicators.Quote;
 import com.bootcamp.finalproject.project_stock_data.repository.StockSymbolRepository;
 
 @Component
@@ -17,22 +18,27 @@ public class StockOHLCVEntityMapper {
 
   public StockOHLCVEntity map(OHLCVDTO ohlcvDTO) {
     String symbol = ohlcvDTO.getChart().getResult().getFirst().getMeta().getSymbol();
+    String yahooSymbol = symbol;
+    if (yahooSymbol.equals("BRK-B")) {
+      yahooSymbol = "BRK.B";
+    } else if (symbol.equals("BF-B")) {
+      yahooSymbol = "BF.B";
+    }
+
     StockSymbolEntity stockSymbolEntity = this.stockSymbolRepository
-        .findBySymbol(symbol).orElseThrow(() -> new IllegalArgumentException(
+        .findBySymbol(yahooSymbol).orElseThrow(() -> new IllegalArgumentException(
             "Symbol not found in database: " + symbol));
+
+    Quote quote = ohlcvDTO.getChart().getResult().getFirst().getIndicators()
+        .getQuote().getFirst();
 
     Long timestamp =
         ohlcvDTO.getChart().getResult().getFirst().getTimestamp().getFirst();
-    Double open = ohlcvDTO.getChart().getResult().getFirst().getIndicators()
-        .getQuote().getFirst().getOpen().getFirst();
-    Double high = ohlcvDTO.getChart().getResult().getFirst().getIndicators()
-        .getQuote().getFirst().getHigh().getFirst();
-    Double low = ohlcvDTO.getChart().getResult().getFirst().getIndicators()
-        .getQuote().getFirst().getLow().getFirst();
-    Double close = ohlcvDTO.getChart().getResult().getFirst().getIndicators()
-        .getQuote().getFirst().getClose().getFirst();
-    Long volume = ohlcvDTO.getChart().getResult().getFirst().getIndicators()
-        .getQuote().getFirst().getVolume().getFirst();
+    Double open = quote.getOpen().getFirst();
+    Double high = quote.getHigh().getFirst();
+    Double low = quote.getLow().getFirst();
+    Double close = quote.getClose().getFirst();
+    Long volume = quote.getVolume().getFirst();
     LocalDate date = Instant.ofEpochMilli(timestamp)
         .atZone(ZoneId.systemDefault()).toLocalDate();
 

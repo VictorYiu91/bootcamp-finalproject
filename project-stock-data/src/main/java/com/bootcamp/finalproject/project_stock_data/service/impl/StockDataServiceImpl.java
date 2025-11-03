@@ -87,7 +87,7 @@ public class StockDataServiceImpl implements StockDataService {
       throws InterruptedException {
     boolean isFail = false;
     List<String> symbols = this.getSymbols();
-    //List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
+    // List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
     List<StockProfileEntity> stockProfileEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     int idx = 0;
@@ -107,13 +107,15 @@ public class StockDataServiceImpl implements StockDataService {
         isFail = true;
         warnings
             .add("Failed to process symbol " + symbol + ": " + e.getMessage());
-        this.errorLogRepository.save(ErrorLogEntity.builder()
+        ErrorLogEntity errorLog = ErrorLogEntity.builder()
             .errorMessage(
                 "Failed to process symbol " + symbol + ": " + e.getMessage())
-            .build());
+            .build();
+        this.errorLogRepository.save(errorLog);
       }
       idx++;
-      System.out.println((idx) + "/" + symbols.size() + " completed: " + symbol);
+      System.out
+          .println((idx) + "/" + symbols.size() + " completed: " + symbol);
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
@@ -135,8 +137,9 @@ public class StockDataServiceImpl implements StockDataService {
       stockProfileEntity = stockProfileRepository
           .findByStockSymbolEntity_Symbol(symbol).orElse(null);
     } catch (IllegalArgumentException e) {
-      this.errorLogRepository
-          .save(ErrorLogEntity.builder().errorMessage(e.getMessage()).build());
+      ErrorLogEntity errorLog =
+          ErrorLogEntity.builder().errorMessage(e.getMessage()).build();
+      this.errorLogRepository.save(errorLog);
     }
     return stockProfileEntity;
   }
@@ -161,33 +164,45 @@ public class StockDataServiceImpl implements StockDataService {
       Long period2) throws InterruptedException {
     boolean isFail = false;
     List<String> symbols = this.getSymbols();
-    //List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
+    // List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     int idx = 0;
 
     for (String symbol : symbols) {
+      String yahooSymbol = symbol;
+      if (symbol.equals("BRK.B")) {
+        yahooSymbol = "BRK-B";
+      } else if (symbol.equals("BF.B")) {
+        yahooSymbol = "BF-B";
+      }
+
       try {
-        OHLCVDTO ohlcvDTO = this.getOhlcv(symbol, period1, period2);
+        OHLCVDTO ohlcvDTO = this.getOhlcv(yahooSymbol, period1, period2);
         StockOHLCVEntity stockOHLCVEntity =
             this.stockOHLCVEntityMapper.map(ohlcvDTO);
         stockOHLCVEntities.add(stockOHLCVEntity);
       } catch (IllegalArgumentException e) {
         isFail = true;
         warnings.add(e.getMessage() + " - skipped");
-        this.errorLogRepository.save(ErrorLogEntity.builder()
-            .errorMessage(e.getMessage() + " - skipped").build());
+        ErrorLogEntity errorLog = ErrorLogEntity.builder()
+            .errorMessage(e.getMessage() + " - skipped").build();
+
+        this.errorLogRepository.save(errorLog);
       } catch (Exception e) {
         isFail = true;
         warnings
             .add("Failed to process symbol " + symbol + ": " + e.getMessage());
-        this.errorLogRepository.save(ErrorLogEntity.builder()
+
+        ErrorLogEntity errorLog = ErrorLogEntity.builder()
             .errorMessage(
                 "Failed to process symbol " + symbol + ": " + e.getMessage())
-            .build());
+            .build();
+        this.errorLogRepository.save(errorLog);
       }
       idx++;
-      System.out.println((idx) + "/" + symbols.size() + " completed: " + symbol);
+      System.out
+          .println((idx) + "/" + symbols.size() + " completed: " + symbol);
       Thread.sleep(Duration.ofSeconds(3));
     }
     if (isFail == true) {
@@ -209,8 +224,9 @@ public class StockDataServiceImpl implements StockDataService {
       stockOHLCVEntities =
           stockOHLCVRepository.findAllByStockSymbolEntity_Symbol(symbol);
     } catch (IllegalArgumentException e) {
-      this.errorLogRepository
-          .save(ErrorLogEntity.builder().errorMessage(e.getMessage()).build());
+      ErrorLogEntity errorLog =
+          ErrorLogEntity.builder().errorMessage(e.getMessage()).build();
+      this.errorLogRepository.save(errorLog);
     }
     return stockOHLCVEntities;
   }
