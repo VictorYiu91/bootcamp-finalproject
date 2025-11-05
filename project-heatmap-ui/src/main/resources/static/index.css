@@ -1,0 +1,62 @@
+body {
+  background-color: rgb(45, 45, 45);
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-family: sans-serif;
+}
+.heatmap-container {
+  margin: 20px;
+  background-color: rgb(50, 50, 50);
+  width: 90%;
+  height: 500px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.heatmap {
+  border: none;
+  border-radius: 15px 15px 0 0;
+  width: 100%;
+  height: 90%;
+  background-color: transparent;
+}
+
+.search-bar {
+  border-radius: 0 0 15px 15px;
+  width: 100%;
+  height: 10%;
+  background-color: rgb(50, 50, 50);
+  display: flex;
+  justify-content: center;
+}
+
+.search-form {
+  height: 35px;
+  width: 100%;
+  margin: 5px 15px;
+  border: 1px solid rgb(75,75,75);
+  display: flex;
+}
+
+#searchbox {
+  outline: none;
+  border: none;
+  background: none;
+  color: white;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+}
+
+#searchbtn {
+  border: none;
+  background-color: rgb(75,75,75);
+  color: white;
+  width: 100px;
+  height: 100%;
+  cursor: pointer;
+}
