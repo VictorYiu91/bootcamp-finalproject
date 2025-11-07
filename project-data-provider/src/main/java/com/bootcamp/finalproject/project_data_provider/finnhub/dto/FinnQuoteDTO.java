@@ -1,10 +1,10 @@
-package com.bootcamp.finalproject.project_data_provider.model.dto;
+package com.bootcamp.finalproject.project_data_provider.finnhub.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class QuoteDTO {
+public class FinnQuoteDTO {
   @JsonProperty(value = "c")
   private Double currentPrice;
   @JsonProperty(value = "d")

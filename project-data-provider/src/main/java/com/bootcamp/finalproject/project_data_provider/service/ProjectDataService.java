@@ -1,9 +1,9 @@
 package com.bootcamp.finalproject.project_data_provider.service;
 
-import com.bootcamp.finalproject.project_data_provider.model.dto.CompanyDTO;
-import com.bootcamp.finalproject.project_data_provider.model.dto.QuoteDTO;
+import com.bootcamp.finalproject.project_data_provider.finnhub.dto.FinnProfileDTO;
+import com.bootcamp.finalproject.project_data_provider.finnhub.dto.FinnQuoteDTO;
 
 public interface ProjectDataService {
-  QuoteDTO getQuote(String symbol);
-  CompanyDTO getCompanyProfile(String symbol);
+  FinnQuoteDTO getQuote(String symbol);
+  FinnProfileDTO getCompanyProfile(String symbol);
 }

@@ -1,10 +1,10 @@
-package com.bootcamp.finalproject.project_data_provider.model.dto;
+package com.bootcamp.finalproject.project_data_provider.finnhub.dto;
 
 import java.time.LocalDate;
 import lombok.Getter;
 
 @Getter
-public class CompanyDTO {
+public class FinnProfileDTO {
   private String country;
   private String currency;
   private String estimateCurrency;

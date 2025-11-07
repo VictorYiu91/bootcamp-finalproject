@@ -1,41 +1,28 @@
 package com.bootcamp.finalproject.project_data_provider.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-import com.bootcamp.finalproject.project_data_provider.model.dto.CompanyDTO;
-import com.bootcamp.finalproject.project_data_provider.model.dto.QuoteDTO;
+import com.bootcamp.finalproject.project_data_provider.finnhub.client.FinnhubClient;
+import com.bootcamp.finalproject.project_data_provider.finnhub.dto.FinnProfileDTO;
+import com.bootcamp.finalproject.project_data_provider.finnhub.dto.FinnQuoteDTO;
 import com.bootcamp.finalproject.project_data_provider.service.ProjectDataService;
 
 @Service
 public class ProjectDataServiceImpl implements ProjectDataService {
+  @Value("${service-api.finnhub.api-key}")
+  private String apiKey;
+
   @Autowired
-  private RestTemplate restTemplate;
+  private FinnhubClient finnhubClient;
 
   @Override
-  public QuoteDTO getQuote(String symbol) {
-    String quoteUrl = UriComponentsBuilder.newInstance() //
-        .scheme("https")//
-        .host("finnhub.io") //
-        .path("/api/v1/quote") //
-        .queryParam("symbol", symbol) //
-        .queryParam("token", "d3r056hr01qna05k6fngd3r056hr01qna05k6fo0") //
-        .build() //
-        .toUriString();
-    return this.restTemplate.getForObject(quoteUrl, QuoteDTO.class);
+  public FinnQuoteDTO getQuote(String symbol) {
+    return this.finnhubClient.getQuote(symbol, apiKey);
   }
 
   @Override
-  public CompanyDTO getCompanyProfile(String symbol) {
-    String companyProfileUrl = UriComponentsBuilder.newInstance() //
-        .scheme("https")//
-        .host("finnhub.io") //
-        .path("api/v1/stock/profile2") //
-        .queryParam("symbol", symbol) //
-        .queryParam("token", "d3r056hr01qna05k6fngd3r056hr01qna05k6fo0") //
-        .build() //
-        .toUriString();
-    return this.restTemplate.getForObject(companyProfileUrl, CompanyDTO.class);
+  public FinnProfileDTO getCompanyProfile(String symbol) {
+    return this.finnhubClient.getProfile(symbol, apiKey);
   }
 }
