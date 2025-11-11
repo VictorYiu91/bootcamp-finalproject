@@ -10,5 +10,6 @@ import com.bootcamp.finalproject.project_stock_data.entity.StockSymbolEntity;
 @Repository
 public interface StockOHLCVRepository extends JpaRepository<StockOHLCVEntity, Long>{
   Optional<StockOHLCVEntity> findByStockSymbolEntity(StockSymbolEntity stockSymbolEntity);
+  
   List<StockOHLCVEntity> findAllByStockSymbolEntity_Symbol(String symbol);
 }

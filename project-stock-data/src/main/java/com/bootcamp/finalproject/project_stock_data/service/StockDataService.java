@@ -24,4 +24,6 @@ public interface StockDataService {
   GResponse<List<StockOHLCVEntity>> getStockOHLCVEntities(Long period1, Long period2) throws InterruptedException;
   
   List<StockOHLCVEntity> getStockOHLCVEntitiesDB(String symbol);
+
+  List<StockProfileEntity> getTopProfilesPerIndustry();
 }

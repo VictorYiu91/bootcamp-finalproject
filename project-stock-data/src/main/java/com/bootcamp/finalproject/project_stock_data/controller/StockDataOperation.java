@@ -30,4 +30,7 @@ public interface StockDataOperation {
   
   @GetMapping(value= "/dbstockohlcv")
   List<StockOHLCVEntity> getStockOHLCVEntitiesDB(@RequestParam String symbol);
+
+  @GetMapping(value = "/dbtopstockprofiles")
+  List<StockProfileEntity> getTopProfilesPerIndustry();
 }

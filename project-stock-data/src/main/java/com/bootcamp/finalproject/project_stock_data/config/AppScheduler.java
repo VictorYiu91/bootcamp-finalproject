@@ -28,7 +28,7 @@ public class AppScheduler {
   @Autowired
   StockOHLCVRepository stockOHLCVRepository;
 
-  @Scheduled(cron = " 0 0 13 * * 1-5")
+  //@Scheduled(cron = " 0 0 13 * * 1-5")
   public void updateStockProfileEntities() throws InterruptedException{
     GResponse<List<StockProfileEntity>> newStockProfileEntities = this.stockDataService.getStockProfileEntities();
     for (StockProfileEntity s : newStockProfileEntities.getData()){
@@ -49,7 +49,7 @@ public class AppScheduler {
     }
   }
 
-  @Scheduled(cron = " 0 0 16 * * 2-6")
+  //@Scheduled(cron = " 0 0 16 * * 2-6")
   public void getOHLCVNewEntries() throws InterruptedException {
     LocalDate ytd = LocalDate.now().minusDays(1);
     LocalTime nine29 = LocalTime.of(21, 29, 0);

@@ -52,4 +52,9 @@ public class StockDataController implements StockDataOperation {
   public List<StockOHLCVEntity> getStockOHLCVEntitiesDB(String symbol) {
     return this.stockDataService.getStockOHLCVEntitiesDB(symbol);
   }
+
+  @Override
+  public List<StockProfileEntity> getTopProfilesPerIndustry() {
+    return this.stockDataService.getTopProfilesPerIndustry();
+  }
 }

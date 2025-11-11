@@ -1,8 +1,8 @@
 package com.bootcamp.finalproject.project_heatmap_ui.controller.impl;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import com.bootcamp.finalproject.project_heatmap_ui.controller.HeatMapStockCandleOperation;
@@ -24,8 +24,6 @@ public class HeatMapStockCandleController
   @Autowired
   private HeatMapDtoMapper heatMapDtoMapper;
 
-  @Autowired
-  private StockCandleDtoMapper stockCandleDtoMapper;
 
   @Override
   public HeatMapDto getHeatMapData(String symbol) {
@@ -36,20 +34,11 @@ public class HeatMapStockCandleController
 
   @Override
   public StockCandleDto getStockCandleData(String symbol) {
-    StockProfileDTO stockProfileDTO = this.dataService.getStockProfile(symbol);
-    List<StockOHLCVDTO> stockOHLCVDTOs = this.dataService.getStockOHLCV(symbol);
-    return this.stockCandleDtoMapper.map(stockProfileDTO, stockOHLCVDTOs);
+    return this.dataService.getStockCandleData(symbol);
   }
 
   @Override
-  public List<HeatMapDto> getAllHeatMapData() {
-    List<String> symbols = this.dataService.getSymbols();
-    return symbols.stream().map(symbol -> {
-      try {
-        return getHeatMapData(symbol);
-      } catch (Exception e) {
-        return null;
-      }
-    }).filter(Objects::nonNull).collect(Collectors.toList());
+  public List<HeatMapDto> getAllHeatMapData(){
+    return this.dataService.getAllHeatMapData();
   }
 }

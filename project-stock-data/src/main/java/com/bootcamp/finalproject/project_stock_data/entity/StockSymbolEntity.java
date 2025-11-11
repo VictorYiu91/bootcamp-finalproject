@@ -21,6 +21,10 @@ public class StockSymbolEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(length = 2, nullable = false)
+  private String market;
   @Column(unique = true, nullable = false)
   private String symbol;
+  @Column(name = "active_ind", nullable = false)
+  private String isActive;
 }

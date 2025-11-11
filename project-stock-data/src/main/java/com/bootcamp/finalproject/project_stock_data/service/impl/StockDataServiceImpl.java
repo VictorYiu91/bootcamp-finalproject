@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -87,7 +89,7 @@ public class StockDataServiceImpl implements StockDataService {
       throws InterruptedException {
     boolean isFail = false;
     List<String> symbols = this.getSymbols();
-    // List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
+    // List<String> symbols = List.of("TSLA", "AAPL", "MSFT");
     List<StockProfileEntity> stockProfileEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     int idx = 0;
@@ -164,7 +166,7 @@ public class StockDataServiceImpl implements StockDataService {
       Long period2) throws InterruptedException {
     boolean isFail = false;
     List<String> symbols = this.getSymbols();
-    // List<String> symbols = List.of("TSLA", "AAPL", "GOOGL");
+    // List<String> symbols = List.of("TSLA", "AAPL", "MSFT");
     List<StockOHLCVEntity> stockOHLCVEntities = new ArrayList<>();
     List<String> warnings = new ArrayList<>();
     int idx = 0;
@@ -229,5 +231,12 @@ public class StockDataServiceImpl implements StockDataService {
       this.errorLogRepository.save(errorLog);
     }
     return stockOHLCVEntities;
+  }
+
+  @Override
+  public List<StockProfileEntity> getTopProfilesPerIndustry() {
+    PageRequest top20 =
+        PageRequest.of(0, 20, Sort.by("marketCapitalization").descending());
+    return stockProfileRepository.findTop20ByMarketCap(top20);
   }
 }
