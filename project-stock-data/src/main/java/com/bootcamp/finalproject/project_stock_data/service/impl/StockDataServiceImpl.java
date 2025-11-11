@@ -65,7 +65,7 @@ public class StockDataServiceImpl implements StockDataService {
   @Override
   public List<String> getSymbols() {
     List<StockSymbolEntity> stockSymbolEntities =
-        this.stockSymbolRepository.findAll();
+        this.stockSymbolRepository.findByIsActive("Y");
     List<String> symbols = stockSymbolEntities.stream().map(e -> {
       return e.getSymbol();
     }).collect(Collectors.toList());
