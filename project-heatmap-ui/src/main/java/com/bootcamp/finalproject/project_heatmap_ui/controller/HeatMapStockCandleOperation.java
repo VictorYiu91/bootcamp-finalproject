@@ -8,12 +8,12 @@ import com.bootcamp.finalproject.project_heatmap_ui.dto.StockCandleDto;
 
 public interface HeatMapStockCandleOperation {
 
-  @GetMapping(value = "/heatmap")
+  @GetMapping(value = "/api/heatmap")
   HeatMapDto getHeatMapData(@RequestParam String symbol);
 
-  @GetMapping(value = "/candle")
+  @GetMapping(value = "/api/candle")
   StockCandleDto getStockCandleData(@RequestParam String symbol);
 
-  @GetMapping("/heatmap/all")
+  @GetMapping("/api/heatmap/all")
   List<HeatMapDto> getAllHeatMapData();
 }

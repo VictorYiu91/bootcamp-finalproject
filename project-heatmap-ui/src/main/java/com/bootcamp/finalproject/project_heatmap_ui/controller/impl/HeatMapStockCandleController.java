@@ -1,7 +1,5 @@
 package com.bootcamp.finalproject.project_heatmap_ui.controller.impl;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,9 +7,7 @@ import com.bootcamp.finalproject.project_heatmap_ui.controller.HeatMapStockCandl
 import com.bootcamp.finalproject.project_heatmap_ui.dto.HeatMapDto;
 import com.bootcamp.finalproject.project_heatmap_ui.dto.StockCandleDto;
 import com.bootcamp.finalproject.project_heatmap_ui.mapper.HeatMapDtoMapper;
-import com.bootcamp.finalproject.project_heatmap_ui.mapper.StockCandleDtoMapper;
 import com.bootcamp.finalproject.project_heatmap_ui.model.dto.QuoteDTO;
-import com.bootcamp.finalproject.project_heatmap_ui.model.dto.StockOHLCVDTO;
 import com.bootcamp.finalproject.project_heatmap_ui.model.dto.StockProfileDTO;
 import com.bootcamp.finalproject.project_heatmap_ui.service.DataService;
 
